@@ -26,8 +26,10 @@ public class SecurityConfiguration {
                                         "/api/v1/auth/register").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())
+                .formLogin((form) -> form
+                        .loginPage("/login").permitAll())
                 .httpBasic(withDefaults())
+                .logout((logout) -> logout.permitAll())
                 .build();
     }
 

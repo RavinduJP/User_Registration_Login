@@ -8,6 +8,7 @@ import com.example.user_registration_login.service.impl.UserServiceImpl;
 import com.example.user_registration_login.utils.ResponseCodeUtils;
 import com.example.user_registration_login.utils.ResponseUtils;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.hibernate.query.sqm.tree.SqmNode.log;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
 public class UserController {
@@ -33,7 +35,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<DefaultResponse> registerUsers(@Valid @RequestBody RegistrationRequest registrationRequest) {
-//        log.info("User registration attempted for email: {}", registrationRequest.getEmail());
+        log.info("User registration attempted for email: {}", registrationRequest.getEmail());
         try {
             BaseResponse<HashMap<String, Object>> response = userService.registerNewUser(registrationRequest);
             if (response.getCode().equals(ResponseCodeUtils.SUCCESS_CODE)) {

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EmailValidator.EmailValidation.class)
 @Documented
@@ -27,7 +27,7 @@ public @interface EmailValidator {
 
         @Override
         public void initialize(EmailValidator constraintAnnotation) {
-            pattern = Pattern.compile(EMAIL_PATTERN);
+            ConstraintValidator.super.initialize((constraintAnnotation));
         }
 
         @Override
@@ -35,6 +35,7 @@ public @interface EmailValidator {
             if (email == null || email.isEmpty()) {
                 return false;
             }
+            pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher matcher = pattern.matcher(email);
             return matcher.matches();
         }
