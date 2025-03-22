@@ -5,4 +5,5 @@ public class ResponseUtils {
     public static final String FAILED = "FAILED";
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
     public static final String INVALID_CREDENTIAL = "INVALID_CREDENTIAL";
+    public static final String UNAUTHORIZED = "UNAUTHORIZED_USER";
 }
