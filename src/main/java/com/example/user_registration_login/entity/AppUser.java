@@ -29,5 +29,6 @@ public class AppUser {
     private String mobileNumber;
     @CreationTimestamp
     private LocalDateTime created_at;
+    private String status;
 
 }

@@ -1,5 +1,6 @@
 package com.example.user_registration_login.service;
 
+import com.example.user_registration_login.dto.requestDto.LoginRequest;
 import com.example.user_registration_login.dto.requestDto.RegistrationRequest;
 import com.example.user_registration_login.dto.responceDto.BaseResponse;
 import com.example.user_registration_login.entity.AppUser;
@@ -12,4 +13,6 @@ public interface UserService {
     public List<AppUser> getAllUsers();
 
     BaseResponse<HashMap<String, Object>> registerNewUser(RegistrationRequest registrationRequest);
+
+    BaseResponse login(LoginRequest loginRequest);
 }

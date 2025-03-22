@@ -1,8 +1,10 @@
 package com.example.user_registration_login.controller;
 
+import com.example.user_registration_login.dto.requestDto.LoginRequest;
 import com.example.user_registration_login.dto.requestDto.RegistrationRequest;
 import com.example.user_registration_login.dto.responceDto.BaseResponse;
 import com.example.user_registration_login.dto.responceDto.DefaultResponse;
+import com.example.user_registration_login.dto.responceDto.LoginResponse;
 import com.example.user_registration_login.entity.AppUser;
 import com.example.user_registration_login.service.impl.UserServiceImpl;
 import com.example.user_registration_login.utils.ResponseCodeUtils;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Slf4j
 @RestController
@@ -49,7 +50,30 @@ public class UserController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
-                    .body(DefaultResponse.error(ResponseUtils.FAILED, e.getMessage(),null));
+                    .body(DefaultResponse.error(ResponseUtils.FAILED, e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(DefaultResponse.internalServerError(ResponseCodeUtils.INTERNAL_SERVER_ERROR_CODE, "Unexpected error occurred"));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<DefaultResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        log.info("User login attempted for email: {}", loginRequest.getEmail());
+        try {
+            BaseResponse<LoginResponse> response = userService.login(loginRequest);
+            if (response.getCode().equals(ResponseCodeUtils.SUCCESS_CODE)) {
+                return ResponseEntity.ok(DefaultResponse.success(ResponseUtils.SUCCESS, response.getMessage(), response.getData()));
+            } else if (response.getCode().equals(ResponseCodeUtils.INTERNAL_SERVER_ERROR_CODE)) {
+                return ResponseEntity.internalServerError()
+                        .body(DefaultResponse.internalServerError(ResponseCodeUtils.INTERNAL_SERVER_ERROR_CODE, response.getMessage()));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(DefaultResponse.error(ResponseUtils.FAILED, response.getMessage(), response.getData()));
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(DefaultResponse.error(ResponseUtils.FAILED, e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
                     .body(DefaultResponse.internalServerError(ResponseCodeUtils.INTERNAL_SERVER_ERROR_CODE, "Unexpected error occurred"));

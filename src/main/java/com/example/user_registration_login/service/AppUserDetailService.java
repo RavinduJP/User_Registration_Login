@@ -22,9 +22,9 @@ public class AppUserDetailService implements UserDetailsService {
             if (appUser == null) {
                 throw new UsernameNotFoundException("No user found with username: " + email);
             }
-            if (userRepository.existsByEmail(appUser.getEmail())) {
-                throw new IllegalArgumentException("The User Already Exists!");
-            }
+//            if (userRepository.existsByEmail(appUser.getEmail())) {
+//                throw new IllegalArgumentException("The User Already Exists!");
+//            }
         return new org.springframework.security.core.userdetails.User(
                 appUser.getEmail(),
                 appUser.getPassword(),
